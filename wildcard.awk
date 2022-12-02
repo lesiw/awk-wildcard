@@ -26,13 +26,12 @@ function wildmatch(wild, test, stop) {
         } else if (wc == 1 && t[ti] == stop) {
             wc = 0
         } else if (w[wi] == t[ti] || w[wi] == "?") {
+            wi++
+            ti++
             if (wc) {
-                ls = ++wi
-                lc = ti++
+                lc = ti
+                ls = wi
                 wc = 0
-            } else {
-                ti++
-                wi++
             }
         } else if (wc) {
             ti++
