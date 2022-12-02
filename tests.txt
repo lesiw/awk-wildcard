@@ -60,3 +60,5 @@ mini*,mini,,1
 mini*,minibar,,1
 xxx*zzy*f,xxxxzzzzzzzzyf,,1
 xxxx*zzy*f*,xxxx*zzzzzzzzy*fffff,,1
+xy**yz,xyy:zyz:yz,:,1
+xy*yz,xyy:zyz,:,0
