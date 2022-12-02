@@ -7,37 +7,31 @@
 # stop - An optional wildcard stop character.
 #
 # Returns 1 if the test string matches, 0 if it does not.
-function wildmatch(wild, test, stop) {
-    split(wild, w, "")
-    split(test, t, "")
-
-    wi = 1
-    ti = 1
-    wc = 0
-    ls = 0
-    lc = 0
+function wildmatch(wild, test, stop,    wi, ti, ws, ts, sc) {
+    split(wild, w, ""); wi = 1
+    split(test, t, ""); ti = 1
 
     while (1) {
         if (w[wi] == "*") {
             wi++
-            wc++
+            sc++
         } else if (!t[ti]) {
             return !w[wi]
-        } else if (wc == 1 && t[ti] == stop) {
-            wc = 0
+        } else if (sc == 1 && t[ti] == stop) {
+            sc = 0
         } else if (w[wi] == t[ti] || w[wi] == "?") {
             wi++
             ti++
-            if (wc) {
-                lc = ti
-                ls = wi
-                wc = 0
+            if (sc) {
+                ws = wi
+                ts = ti
+                sc = 0
             }
-        } else if (wc) {
+        } else if (sc) {
             ti++
-        } else if (ls) {
-            wi = ls
-            ti = ++lc
+        } else if (ws) {
+            wi = ws
+            ti = ++ts
         } else {
             return 0
         }
