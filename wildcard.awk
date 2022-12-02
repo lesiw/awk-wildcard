@@ -18,24 +18,26 @@ function wildmatch(wild, test, stop) {
     lc = 0
 
     while (1) {
-        if (!t[ti] && !w[wi]) {
-            return 1
-        } else if (w[wi] == "*") {
+        if (w[wi] == "*") {
             wi++
             wc++
+        } else if (!w[wi] && !t[ti]) {
+            return 1
         } else if (!t[ti]) {
             return 0
+        } else if (w[wi] == t[ti] || w[wi] == "?") {
+            if (wc) {
+                ls = ++wi
+                lc = ti++
+                wc = 0
+            } else {
+                ti++
+                wi++
+            }
         } else if (wc == 1 && t[ti] == stop) {
-            wc = 0
-        } else if (wc && (w[wi] == "?" || w[wi] == t[ti])) {
-            ls = ++wi
-            lc = ti++
             wc = 0
         } else if (wc) {
             ti++
-        } else if (w[wi] == "?" || w[wi] == t[ti]) {
-            ti++
-            wi++
         } else if (ls) {
             wi = ls
             ti = ++lc
