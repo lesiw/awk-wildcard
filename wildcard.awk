@@ -8,61 +8,42 @@
 #
 # Returns 1 if the test string matches, 0 if it does not.
 function wildmatch(wild, test, stop) {
-    split(wild, wildchar, "")
-    wildidx = 1
-    split(test, testchar, "")
-    testidx = 1
+    split(wild, w, "")
+    split(test, t, "")
 
-    laststar = 0
-    lastchar = 0
+    wi = 1
+    ti = 1
+    wc = 0
+    ls = 0
+    lc = 0
 
     while (1) {
-        wildcount = 0
-        if (wildchar[wildidx] == "*") {
-            while (1) {
-                wildcount++
-                if (wildidx == length(wild))
-                    break
-                else if (wildchar[wildidx+1] != "*")
-                    break
-                wildidx++
-            }
-            while (1) {
-                if (wildcount == 1 && testchar[testidx] == stop)
-                    break
-                if (wildchar[wildidx+1] == "?")
-                    break
-                if (testchar[testidx] == wildchar[wildidx+1])
-                    break
-                if (testidx == length(test))
-                    return (wildidx == length(wild))
-                testidx++
-            }
-            if (wildcount != 1 || testchar[testidx] != stop) {
-                laststar = wildidx
-                lastchar = testidx
-            }
-            wildidx++
-        } else if (wildchar[wildidx] == "?") {
-            testidx++
-            wildidx++
-        } else if (testchar[testidx] == wildchar[wildidx]) {
-            testidx++
-            wildidx++
-        } else if (laststar) {
-            wildidx = laststar
-            testidx = lastchar+1
-        } else {
-            return 0
-        }
-        if (testidx > length(test) && wildidx > length(wild)) {
+        if (!t[ti] && !w[wi]) {
             return 1
-        } else if (testidx > length(test) && wildchar[wildidx] != "*") {
+        } else if (w[wi] == "*") {
+            wi++
+            wc++
+        } else if (!t[ti]) {
             return 0
-        } else if (wildidx > length(wild) && laststar) {
-            wildidx = laststar
-            testidx = lastchar+1
-        } else if (wildidx > length(wild)) {
+        } else if (wc && !w[wi] && !t[ti+1]) {
+            return 1
+        } else if (wc && !t[ti+1]) {
+            return 0
+        } else if (wc == 1 && t[ti] == stop) {
+            wc = 0
+        } else if (wc && (w[wi] == "?" || w[wi] == t[ti])) {
+            ls = ++wi
+            lc = ti++
+            wc = 0
+        } else if (wc) {
+            ti++
+        } else if (w[wi] == "?" || w[wi] == t[ti]) {
+            ti++
+            wi++
+        } else if (ls) {
+            wi = ls
+            ti = ++lc
+        } else {
             return 0
         }
     }

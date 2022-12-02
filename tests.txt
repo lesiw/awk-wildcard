@@ -39,3 +39,11 @@ fo?,foobar,,0
 ?,x,,1
 *,,,1
 fo*d,foo,,0
+**:baz:*,foo:bar:biz:baz,:,0
+**:biz:*,foo:bar:biz:baz,:,1
+foo*,foo:bar,:,0
+foo**,foo:bar,:,1
+foo:,foo*,:,0
+:foo,*foo,:,0
+*aa?,aaaaa,,1
+a*bc,ab,,0
