@@ -12,28 +12,20 @@ function wildmatch(wild, test, stop,    wi, ti, sc, ws, ts, ss) {
     split(test, t, ""); ti = 1
     while (1) {
         if (w[wi] == "*") {
-            wi++
-            sc++
+            wi++; sc++
         } else if (!t[ti]) {
             return !w[wi]
         } else if (sc == 1 && t[ti] == stop) {
             sc = 0
         } else if (w[wi] == t[ti] || w[wi] == "?") {
-            if (sc) {
-                ws = wi
-                ts = ti
-                ss = sc
-                sc = 0
-            }
-            wi++
-            ti++
+            if (sc) { ws = wi; ts = ti; ss = sc; sc = 0 }
+            wi++; ti++
         } else if (sc) {
             ti++
+        } else if (t[ti] == stop && ss < 2) {
+            return 0
         } else if (ws) {
-            sc = ss
-            if (t[ti] == stop && sc < 2) return 0
-            wi = ws
-            ti = ++ts
+            sc = ss; wi = ws; ti = ++ts
         } else {
             return 0
         }
